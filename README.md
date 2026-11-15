@@ -1,2 +1,1 @@
-﻿# aplikacje-webowe-i-sieciowe
-Projekt zarządzania samochodami realizowany na laboratoriach
+Backend for a Cars Client project
