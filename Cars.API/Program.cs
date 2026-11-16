@@ -99,8 +99,6 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 
 var app = builder.Build();
 
-app.UseMiddleware<ApiExceptionMiddleware>();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -110,6 +108,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ApiExceptionMiddleware>();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -123,14 +122,13 @@ var userManager = services.GetRequiredService<
 var roleManager = services.GetRequiredService<
     RoleManager<IdentityRole>>();
 
-await IdentitySeed.SeedAsync(
-    userManager,
-    roleManager);
 try 
 {
     var context = services.GetRequiredService<DataContext>();
     await context.Database.MigrateAsync();
     await Seed.SeedData(context);
+    await FeatureSeed.SeedAsync(context);
+    await IdentitySeed.SeedAsync(userManager, roleManager);
 }
 catch (Exception ex)
 {
