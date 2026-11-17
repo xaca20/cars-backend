@@ -22,13 +22,13 @@ public class CarsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Car>>> GetCars()
+    public async Task<ActionResult<List<CarDto>>> GetCars()
     {
         return await _sender.Send(new GetCarsList.Query());
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<Car>> GetCar(Guid id)
+    public async Task<ActionResult<CarDto>> GetCar(Guid id)
     {
         var car = await _sender.Send(new Details.Query { Id = id });
 
